@@ -1,5 +1,7 @@
 package models;
 import enums.TypeCurrency;
+import services.HttpClientService;
+
 import java.time.LocalDate;
 
 public class Conversion {
@@ -8,16 +10,17 @@ public class Conversion {
     private LocalDate dateCreate;
     private Double amountEntered;
     private Double amountResult;
+    private HttpClientService httpClientService;
 
-    public Conversion(TypeCurrency baseCurrency, TypeCurrency targetCurrency, Double amountEntered, Double amountResult) {
+    public Conversion(TypeCurrency baseCurrency, TypeCurrency targetCurrency, Double amountEntered) {
         this.baseCurrency = baseCurrency;
         this.targetCurrency = targetCurrency;
         this.dateCreate = LocalDate.now();
         this.amountEntered = amountEntered;
-        this.amountResult = amountResult;
+        this.amountResult = httpClientService.getConversionTwoCurrency(baseCurrency, targetCurrency, amountEntered);
     }
-    public Conversion(){
-
+    public Conversion(HttpClientService httpClientService){
+        this.httpClientService = httpClientService;
     }
 
     public TypeCurrency getBaseCurrency() {
