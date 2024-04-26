@@ -2,7 +2,7 @@ package enums;
 
 public enum TypeCurrency {
     USD,
-    ARG,
+    ARS,
     EUR,
 
 }
