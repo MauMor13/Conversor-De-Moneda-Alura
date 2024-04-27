@@ -5,6 +5,7 @@ import enums.TypeCurrency;
 import java.util.Scanner;
 
 public class Util {
+
     private static final Scanner scn = new Scanner(System.in);
 
     //manejo de error: retorno de booleano
@@ -41,9 +42,9 @@ public class Util {
     public static void mainMenu(){
         System.out.print("""
                          ****************************************************************
-                         *            Ingresa la acción seleccionada:                   *
+                         *             Ingresa la opción a realizar:                    *
                          * 1_ Ver valores de cambio respecto moneda a seleccionar       *
-                         * 2_ Ver tipos de monedas                                      *
+                         * 2_ Buscar tipo de cambio por nombre de moneda                *
                          * 3_ Realizar una conversion de monedas                        *
                          * 4_ Ver el historial de conversiones previas                  *
                          * 5_ Salir                                                     *
@@ -68,4 +69,22 @@ public class Util {
         }while (!valControl);
         return entryDate;
     }
+
+    public static byte validationByte(){
+        byte numSelect;
+        boolean valControl;
+        do {
+            while (!scn.hasNextByte()){
+                System.out.println("! El valor ingresado es incorrecto vuelva a intentarlo ¡");
+                scn.next();
+            }
+            numSelect = scn.nextByte();
+            valControl = numSelect > 0 && numSelect <= 5;
+            if (!valControl){
+                System.out.println("El valor de opción tiene que ser entre 1 y 5");
+            }
+        }while (!valControl);
+        return numSelect;
+    }
+
 }
