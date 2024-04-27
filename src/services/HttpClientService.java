@@ -7,7 +7,7 @@ import models.Conversion;
 
 
 public interface HttpClientService {
-    TypeCurrencyDTO getTypeCurrencies();
-    CurrencyDTO getCurrencyResponse(String typeCurrency);
+    void getTypeCurrencies();
+    void getCurrencyResponse(String typeCurrency);
     void getConversionTwoCurrency(TypeCurrency baseType, TypeCurrency targetType, double amount);
 }
