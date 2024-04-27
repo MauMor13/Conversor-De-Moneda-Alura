@@ -53,10 +53,14 @@ public class HttpClientImpl implements HttpClientService {
     }
 
     @Override
-    public Double getConversionTwoCurrency(TypeCurrency baseType, TypeCurrency targetType, double amount) {
+    public void getConversionTwoCurrency(TypeCurrency baseType, TypeCurrency targetType, double amount) {
         String endUrl = "/pair/".concat(baseType.name().concat("/".concat(targetType.name().concat("/".concat(String.valueOf(amount))))));
         String json = this.requestStructure(endUrl);
-        ConversionPairDTO conversionPairDTO = this.jsonTransform.deserializationGson(json, ConversionPairDTO.class);
-        return conversionPairDTO.conversion_result();
+        if (json != null){
+            this.jsonTransform.deserializationGson(json, ConversionPairDTO.class);
+        }
+        else {
+            System.out.println("A ocurrido un error vuelva a intentarlo ");
+        }
     }
 }

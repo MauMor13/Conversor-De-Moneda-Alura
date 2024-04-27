@@ -1,4 +1,5 @@
 package models;
+import DTOs.ConversionPairDTO;
 import enums.TypeCurrency;
 import services.HttpClientService;
 import services.impl.HttpClientImpl;
@@ -6,23 +7,21 @@ import services.impl.HttpClientImpl;
 import java.time.LocalDate;
 
 public class Conversion {
+
     private TypeCurrency baseCurrency;
     private TypeCurrency targetCurrency;
     private LocalDate dateCreate;
     private Double amountEntered;
     private Double amountResult;
 
-    public Conversion(TypeCurrency baseCurrency, TypeCurrency targetCurrency, Double amountEntered) {
-        this.baseCurrency = baseCurrency;
-        this.targetCurrency = targetCurrency;
+    public Conversion(ConversionPairDTO conversionPairDTO, Double amountEntered) {
+        this.baseCurrency = TypeCurrency.valueOf(conversionPairDTO.base_code());
+        this.targetCurrency = TypeCurrency.valueOf(conversionPairDTO.target_code());
         this.dateCreate = LocalDate.now();
         this.amountEntered = amountEntered;
-        HttpClientService httpClientService = new HttpClientImpl();
-        this.amountResult = httpClientService.getConversionTwoCurrency(baseCurrency, targetCurrency, amountEntered);
+        this.amountResult = conversionPairDTO.conversion_result();
     }
-    public Conversion(){
-
-    }
+    public Conversion() { }
 
     public TypeCurrency getBaseCurrency() {
         return baseCurrency;

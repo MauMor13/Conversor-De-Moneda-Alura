@@ -11,10 +11,7 @@ import services.JsonTransformService;
 public class JsonTransformImpl implements JsonTransformService {
 
     //instancia del objeto gson para el uso
-    private final Gson gson = new GsonBuilder()
-            .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-            .setPrettyPrinting()
-            .create();
+    private final Gson gson = new Gson();
 
     //metodo deserializacion del json
     @Override
@@ -28,9 +25,6 @@ public class JsonTransformImpl implements JsonTransformService {
                 return null;
             }
         }
-        System.out.println(json);
-        System.out.println(typeClass);
-        System.out.println(gson.fromJson(json, ConversionPairDTO.class));
         return this.gson.fromJson(json, typeClass);
     }
 

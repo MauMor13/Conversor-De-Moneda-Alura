@@ -9,5 +9,5 @@ import models.Conversion;
 public interface HttpClientService {
     TypeCurrencyDTO getTypeCurrencies();
     CurrencyDTO getCurrencyResponse(String typeCurrency);
-    Double getConversionTwoCurrency(TypeCurrency baseType, TypeCurrency targetType, double amount);
+    void getConversionTwoCurrency(TypeCurrency baseType, TypeCurrency targetType, double amount);
 }
