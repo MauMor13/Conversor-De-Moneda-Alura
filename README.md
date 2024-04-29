@@ -22,9 +22,9 @@
 
 # 📸 Capturas de Pantalla 📸
 <p align="center">
-  <img src= "src/images/captureOne">
-  <img src= "src/images/captureTwo">
-  <img src= "src/images/captureThree">
+  <img src= "src/images/captureOne.png">
+  <img src= "src/images/captureTwo.png">
+  <img src= "src/images/captureThree.png">
 </p>
 
 # :iphone:Redes:iphone:
