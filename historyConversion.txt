@@ -1,0 +1,1 @@
+{"arrayListConversion":[{"baseCurrency":"USD","targetCurrency":"ARS","dateCreate":"2024-04-29","amountEntered":154654.0,"amountResult":1.337370465E8},{"baseCurrency":"ARS","targetCurrency":"EUR","dateCreate":"2024-04-29","amountEntered":156546.0,"amountResult":169.06968}]}

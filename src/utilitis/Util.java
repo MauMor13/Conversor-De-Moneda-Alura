@@ -1,6 +1,9 @@
 package utilitis;
 import DTOs.TypeCurrencyDTO;
 import enums.TypeCurrency;
+import models.Conversion;
+
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,6 +33,12 @@ public class Util {
         } catch (IllegalArgumentException e) {
             return false; // El valor no está presente en el enum
         }
+    }
+
+    //formateo de decimales
+    public static String formatNumber(double num) {
+        DecimalFormat formatter = new DecimalFormat("#,###.##");
+        return formatter.format(num);
     }
 
     //control de string cambio a mayuscula retorna enum correspondiente
@@ -157,6 +166,18 @@ public class Util {
                     """);
             exit = !(validationByte((byte)2, (byte) 1) == 2);
         }while (exit);
+    }
+
+    //impresion de conversiones guardadas en el archivo txt
+    public static void printingHistoryConversion(List<Conversion> conversionArrayList){
+        if (conversionArrayList.isEmpty()){
+            System.out.println("No tiene conversiones en el historial");
+        }
+        else{
+            conversionArrayList.forEach(conversion -> {
+            System.out.println(conversion.toString());
+        });
+        }
     }
 
 }

@@ -11,11 +11,13 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 public class HttpClientImpl implements HttpClientService {
 
     private final JsonTransformService jsonTransform = new JsonTransformImpl();
 
+    //estructura de la peticion general
     public String requestStructure(String endUrl){
         //ruta y clave a la api de conversion
         String partialUrl = "https://v6.exchangerate-api.com/v6/";
@@ -40,6 +42,7 @@ public class HttpClientImpl implements HttpClientService {
         return null;
     }
 
+    //retorno de los codigos que soporta la api
     @Override
     public TypeCurrencyDTO getTypeCurrencies() {
         String endUrl = "/codes";
@@ -50,6 +53,7 @@ public class HttpClientImpl implements HttpClientService {
         return null;
     }
 
+    //manejo de la peticion de conversion de un valor en las demás tipos de moneda
     @Override
     public void getMultipleConversion(TypeCurrency typeCurrency) {
         String endUrl = "/latest/".concat(typeCurrency.name());
@@ -65,15 +69,19 @@ public class HttpClientImpl implements HttpClientService {
         }
     }
 
+    //manejo de conversion entre dos monedas
     @Override
-    public void getConversionTwoCurrency(TypeCurrency baseType, TypeCurrency targetType, double amount) {
+    public void getConversionTwoCurrency(TypeCurrency baseType, TypeCurrency targetType, double amount, List<Conversion> listConversionHistory) {
         String endUrl = "/pair/".concat(baseType.name().concat("/".concat(targetType.name().concat("/".concat(String.valueOf(amount))))));
         String json = this.requestStructure(endUrl);
         if (json != null){
             ConversionPairDTO conversionPairDTO = this.jsonTransform.deserializationGson(json, ConversionPairDTO.class);
             if (conversionPairDTO != null){
-                Conversion conversion = new Conversion(conversionPairDTO, amount);//*************** Falta guardar la conversion en un array list **************
-                System.out.println("El resultado de la conversion de:\n " + conversion.getAmountEntered() + " " + baseType.name() + " es de " + conversion.getAmountResult() + " " + targetType.name());
+                Conversion conversion = new Conversion(conversionPairDTO, amount);
+                listConversionHistory.add(conversion);//guardado en el historial de convesiones
+                System.out.println("El resultado de la conversion de:\n" + "$ " +
+                        Util.formatNumber(conversion.getAmountEntered()) + " " + baseType.name() +
+                        " es de $ " + Util.formatNumber(conversion.getAmountResult()) + " " + targetType.name());
                 System.out.println("*** Si desea puede ver sus ultimas conversiones en el historial ***\n");
             }
         }
@@ -81,4 +89,5 @@ public class HttpClientImpl implements HttpClientService {
             System.out.println("A ocurrido un error vuelva a intentarlo");
         }
     }
+
 }

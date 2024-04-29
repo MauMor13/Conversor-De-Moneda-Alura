@@ -1,8 +1,10 @@
 package services.impl;
+import DTOs.ListConversionDTO;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import models.Conversion;
 import services.JsonTransformService;
+import java.util.List;
 
 public class JsonTransformImpl implements JsonTransformService {
 
@@ -26,11 +28,12 @@ public class JsonTransformImpl implements JsonTransformService {
 
     //metodo de serializacion del json
     @Override
-    public String serializationGson(Conversion conversion){
-        if (conversion == null){
+    public String serializationGson(ListConversionDTO conversionArrayList){
+        if (conversionArrayList.arrayListConversion().isEmpty()){
             System.out.println("Esta conversion no contiene datos");
             return null;
         }
-        return this.gson.toJson(conversion);
+        return this.gson.toJson(conversionArrayList);
     }
+
 }

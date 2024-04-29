@@ -1,8 +1,9 @@
-import DTOs.MultiCurrencyConversionDTO;
 import DTOs.TypeCurrencyDTO;
 import enums.TypeCurrency;
 import models.Conversion;
+import services.FileManagementService;
 import services.HttpClientService;
+import services.impl.FileManagementImpl;
 import services.impl.HttpClientImpl;
 import utilitis.Util;
 import java.util.ArrayList;
@@ -10,15 +11,14 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        //instancia del historial de conversiones
-        List<Conversion> listConversionHistory = new ArrayList<>();
+    public static void main(String[] args){
 
-        //instancia de servicio
+        //instancia de servicios
+        FileManagementService fileManagementService = new FileManagementImpl();
         HttpClientService httpClientService = new HttpClientImpl();
 
-        //var de tipo de modena local
-        TypeCurrency localTypeCurrency;
+        //crear una nueva lista de conversiones para el historial
+        List<Conversion> listConversionHistory = fileManagementService.readFileHistory();
 
         //instancia de lectura de entrada
         Scanner scn = new Scanner(System.in);
@@ -37,7 +37,7 @@ public class Main {
             byte numSelection = Util.validationByte((byte) 5, (byte) 1);
             switch (numSelection){
                 case 1:{
-                    TypeCurrency typeCurrency = Util.controlCurrencyType("**** Ingrese un tipo de moneda el cual quiera ver conversiones respecto a esta ****");
+                    TypeCurrency typeCurrency = Util.controlCurrencyType("**** Ingrese un tipo de moneda a la cual quiera ver sus conversiones ****");
                     httpClientService.getMultipleConversion(typeCurrency);
                     Util.mainMenu();
                     break;
@@ -72,17 +72,23 @@ public class Main {
                     double amount = Util.entryAmountCheck();
                     TypeCurrency baseTypeCurrency = Util.controlCurrencyType(" ** Ingrese el tipo de cambio de este monto " + amount + "\n ** Ejemplo: USD - ARS - EUR");
                     TypeCurrency targetTypeCurrency = Util.controlCurrencyType("Por ultimo ingrese el tipo de cambio al cual desea convertir");
-                    httpClientService.getConversionTwoCurrency(baseTypeCurrency, targetTypeCurrency, amount);
+                    httpClientService.getConversionTwoCurrency(baseTypeCurrency, targetTypeCurrency, amount, listConversionHistory);
                     Util.mainMenu();
                     break;
                 }
                 case 4:{
                     System.out.println(" ****** Su historial de conversiones ****** ");
-
+                    Util.printingHistoryConversion(listConversionHistory);
+                    System.out.println("\n\n************* ¿Desea borrar el historial ? *************");
+                    System.out.println("1_ Si \n2_ No");
+                    if (Util.validationByte((byte)2,(byte)1) == 1){
+                        listConversionHistory.clear();
+                    }
                     Util.mainMenu();
                     break;
                 }
                 case 5:{
+                    fileManagementService.writeFileHistory(listConversionHistory);
                     System.out.println("************ Gracias por utilizar nuestro conversor de moneda ************");
                     exit = true;
                     break;
